@@ -15,6 +15,14 @@ services:
     restart: unless-stopped
     volumes:
       - ${DOC_MOST_VOLUME:-docmost}:/app/data/storage
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+#    cap_add:
+#      - CHOWN     
+#      - setuid
+#      - fowner
 
   db:
     image: postgres:16-alpine
@@ -25,12 +33,16 @@ services:
     restart: unless-stopped
     volumes:
       - ${DB_DATA_VOLUME:-db_data}:/var/lib/postgresql/data
+    security_opt:
+      - no-new-privileges:true      
 
   redis:
     image: redis:7.2-alpine
-    restart: unless-stopped
+    restart: unless-stopped  
     volumes:
       - ${REDIS_DATA_VOLUME:-redis_data}:/data
+    security_opt:
+      - no-new-privileges:true      
 
 volumes:
   docmost:
